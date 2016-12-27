@@ -17,7 +17,7 @@ Once imported,
 EasyFiles ef = new EasyFiles();
 
 ef.copyFile(source, target);
-ef.readFileAsLines(source);
+List<String> content = ef.readFileAsLines(source);
 // ...
 ```
 
