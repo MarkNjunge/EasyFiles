@@ -134,7 +134,9 @@ public class EasyFiles {
             BufferedReader reader = Files.newBufferedReader(source);
 
             try (Scanner scanner = new Scanner(reader)) {
-                scanner.useDelimiter(delimiter);// Default is spaces
+                if (delimiter != null){
+                    scanner.useDelimiter(delimiter);// Default is spaces
+                }
                 while (scanner.hasNext()) {
                     tokens.add(scanner.next());
                 }
