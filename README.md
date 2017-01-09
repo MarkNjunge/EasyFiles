@@ -12,13 +12,23 @@ The library can:
 4. Read the content of a file in tokens.
 
 #Usage
-Once imported,
 ```Java
-EasyFiles ef = new EasyFiles();
+Path source = Paths.get("source.txt");
+Path target = Paths.get("target.txt");
 
-ef.copyFile(source, target);
-List<String> content = ef.readFileAsLines(source);
-// ...
+EasyFiles easyFiles = new EasyFiles();
+
+easyFiles.copyFile(source, target);
+easyFiles.deleteFile(source);
+easyFiles.moveFile(source, target);
+
+List<String> contentLines = easyFiles.readFileAsLines(source);
+easyFiles.writeFileByLine(target, contentLines, true);
+
+byte[] contentBytes = easyFiles.readFileAsBytes(source);
+easyFiles.writeFileByBytes(target, contentBytes);
+
+List<String> tokens = easyFiles.readFileTokens(source, null);
 ```
 
 #License
