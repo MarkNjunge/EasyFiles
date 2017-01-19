@@ -4,9 +4,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * A simple way of performing common file interactions
@@ -14,6 +12,9 @@ import java.util.Scanner;
  * @version 1.0
  */
 public class EasyFiles {
+
+    public static final String FILENAME = "filename";
+    public static final String EXTENSION = "extension";
 
     /**
      * Copies a file from one location to another
@@ -54,6 +55,18 @@ public class EasyFiles {
     }
 
     /**
+     * Returns the filename and extension
+     * @param source The file to be inspected
+     * @return Map containing filename and extension
+     */
+    public Map<String, String> getFileNameAndExtension(Path source) {
+        Map<String, String> result = new HashMap<>();
+        result.put(FILENAME, source.getFileName().toString().split("\\.")[0]);
+        result.put(EXTENSION, source.getFileName().toString().split("\\.")[1]);
+        return result;
+    }
+
+    /**
      * Reads a file by line
      * @param source The file to be read
      * @return The contents of the file
@@ -80,7 +93,7 @@ public class EasyFiles {
      */
     public void writeFileByLine(Path target, List<String> content, Boolean append) {
         try {
-            FileWriter fileWriter = new FileWriter(target.getFileName().toString(), append);
+            FileWriter fileWriter = new FileWriter(target.toString(), append);
 
             try (BufferedWriter writer = new BufferedWriter(fileWriter)) {
                 for (String s : content) {

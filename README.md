@@ -22,6 +22,10 @@ easyFiles.copyFile(source, target);
 easyFiles.deleteFile(source);
 easyFiles.moveFile(source, target);
 
+Map<String, String> map = easyFiles.getFileNameAndExtension(source);
+map.get(EasyFiles.FILENAME);
+map.get(EasyFiles.EXTENSION);
+
 List<String> contentLines = easyFiles.readFileAsLines(source);
 easyFiles.writeFileByLine(target, contentLines, true);
 
