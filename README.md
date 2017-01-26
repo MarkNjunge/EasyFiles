@@ -30,7 +30,8 @@ EasyFiles.writeFileByLine(target, contentLines, true);
 byte[] contentBytes = easyFiles.readFileAsBytes(source);
 EasyFiles.writeFileByBytes(target, contentBytes);
 
-List<String> tokens = EasyFiles.readFileTokens(source, null);
+String delimiter = ","; //Default is whitespace
+List<String> tokens = EasyFiles.readFileTokens(source, delimiter);
 ```
 
 #License
