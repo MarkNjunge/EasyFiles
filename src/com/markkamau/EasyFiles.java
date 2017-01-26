@@ -21,7 +21,7 @@ public class EasyFiles {
      * @param source The file that is to be copied
      * @param target The target location and name of the new file
      */
-    public void copyFile(Path source, Path target) {
+    public static void copyFile(Path source, Path target) {
         try {
             Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
@@ -33,7 +33,7 @@ public class EasyFiles {
      * Deletes a file if it exists
      * @param source The file to be deleted
      */
-    public void deleteFile(Path source){
+    public static void deleteFile(Path source){
         try {
             Files.deleteIfExists(source);
         } catch (IOException e) {
@@ -46,7 +46,7 @@ public class EasyFiles {
      * @param source The file that is to be moved
      * @param target The target location and name of the new file
      */
-    public void moveFile(Path source, Path target){
+    public static void moveFile(Path source, Path target){
         try {
             Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
@@ -59,7 +59,7 @@ public class EasyFiles {
      * @param source The file to be inspected
      * @return Map containing filename and extension
      */
-    public Map<String, String> getFileNameAndExtension(Path source) {
+    public static Map<String, String> getFileNameAndExtension(Path source) {
         Map<String, String> result = new HashMap<>();
         result.put(FILENAME, source.getFileName().toString().split("\\.")[0]);
         result.put(EXTENSION, source.getFileName().toString().split("\\.")[1]);
@@ -71,7 +71,7 @@ public class EasyFiles {
      * @param source The file to be read
      * @return The contents of the file
      */
-    public List<String> readFileAsLines(Path source) {
+    public static List<String> readFileAsLines(Path source) {
         List<String> lines = new ArrayList<>();
 
         try (BufferedReader reader = Files.newBufferedReader(source)) {
@@ -91,7 +91,7 @@ public class EasyFiles {
      * @param content The content to be written to the file, passed a List
      * @param append Whether or not the content should add to what is already there or replace it
      */
-    public void writeFileByLine(Path target, List<String> content, Boolean append) {
+    public static void writeFileByLine(Path target, List<String> content, Boolean append) {
         try {
             FileWriter fileWriter = new FileWriter(target.toString(), append);
 
@@ -113,7 +113,7 @@ public class EasyFiles {
      * @param source The file to be read
      * @return The data in the file
      */
-    public byte[] readFileAsBytes(Path source) {
+    public static byte[] readFileAsBytes(Path source) {
         try {
             return Files.readAllBytes(source);
         } catch (IOException e) {
@@ -127,7 +127,7 @@ public class EasyFiles {
      * @param target The file to be written to
      * @param content The content to be written
      */
-    public void writeFileByBytes(Path target, byte[] content) {
+    public static void writeFileByBytes(Path target, byte[] content) {
         try {
             Files.write(target, content);
         } catch (IOException e) {
@@ -141,7 +141,7 @@ public class EasyFiles {
      * @param delimiter The delimiter, that is,  the separator between tokens
      * @return The tokens read from the file
      */
-    public List<String> readFileTokens(Path source, String delimiter) {
+    public static List<String> readFileTokens(Path source, String delimiter) {
         List<String> tokens = new ArrayList<>();
         try {
             BufferedReader reader = Files.newBufferedReader(source);
