@@ -8,8 +8,9 @@ import java.util.*;
 
 /**
  * A simple way of performing common file interactions
- * @author  Mark Kamau
- * @version 1.0
+ *
+ * @author Mark Kamau
+ * @version 1.1
  */
 public class EasyFiles {
 
@@ -18,12 +19,17 @@ public class EasyFiles {
 
     /**
      * Copies a file from one location to another
-     * @param source The file that is to be copied
-     * @param target The target location and name of the new file
+     *
+     * @param source   The file that is to be copied
+     * @param target   The target location and name of the new file
+     * @param listener A listener for a successful operation, may be null
      */
-    public void copyFile(Path source, Path target) {
+    public void copyFile(Path source, Path target, ActionListeners listener) {
         try {
             Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+            if (listener != null) {
+                listener.actionSuccessful();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -31,11 +37,16 @@ public class EasyFiles {
 
     /**
      * Deletes a file if it exists
-     * @param source The file to be deleted
+     *
+     * @param source   The file to be deleted
+     * @param listener A listener for a successful operation, may be null
      */
-    public void deleteFile(Path source){
+    public void deleteFile(Path source, ActionListeners listener) {
         try {
             Files.deleteIfExists(source);
+            if (listener != null) {
+                listener.actionSuccessful();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,10 +54,12 @@ public class EasyFiles {
 
     /**
      * Moves a file from one location to another
-     * @param source The file that is to be moved
-     * @param target The target location and name of the new file
+     *
+     * @param source   The file that is to be moved
+     * @param target   The target location and name of the new file
+     * @param listener A listener for a successful operation, may be null
      */
-    public void moveFile(Path source, Path target){
+    public void moveFile(Path source, Path target, ActionListeners listener) {
         try {
             Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
@@ -56,18 +69,29 @@ public class EasyFiles {
 
     /**
      * Returns the filename and extension
-     * @param source The file to be inspected
-     * @return Map containing filename and extension
+     *
+     * @param source   The file to be inspected
+     * @param listener A listener for a successful operation, may be null
+     * @return Map containing filename and extension, may be null
      */
-    public Map<String, String> getFileNameAndExtension(Path source) {
-        Map<String, String> result = new HashMap<>();
-        result.put(FILENAME, source.getFileName().toString().split("\\.")[0]);
-        result.put(EXTENSION, source.getFileName().toString().split("\\.")[1]);
-        return result;
+    public Map<String, String> getFileNameAndExtension(Path source, ActionListeners listener) {
+        try {
+            Map<String, String> result = new HashMap<>();
+            result.put(FILENAME, source.getFileName().toString().split("\\.")[0]);
+            result.put(EXTENSION, source.getFileName().toString().split("\\.")[1]);
+            if (listener != null) {
+                listener.actionSuccessful();
+            }
+            return result;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
      * Reads a file by line
+     *
      * @param source The file to be read
      * @return The contents of the file
      */
@@ -87,11 +111,13 @@ public class EasyFiles {
 
     /**
      * Write a file line by line
-     * @param target The file to be written to
-     * @param content The content to be written to the file, passed a List
-     * @param append Whether or not the content should add to what is already there or replace it
+     *
+     * @param target   The file to be written to
+     * @param content  The content to be written to the file, passed a List
+     * @param listener A listener for a successful operation, may be null
+     * @param append   Whether or not the content should add to what is already there or replace it
      */
-    public void writeFileByLine(Path target, List<String> content, Boolean append) {
+    public void writeFileByLine(Path target, List<String> content, Boolean append, ActionListeners listener) {
         try {
             FileWriter fileWriter = new FileWriter(target.toString(), append);
 
@@ -99,6 +125,9 @@ public class EasyFiles {
                 for (String s : content) {
                     writer.append(s, 0, s.length());
                     writer.newLine();
+                }
+                if (listener != null) {
+                    listener.actionSuccessful();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -110,6 +139,7 @@ public class EasyFiles {
 
     /**
      * Reads a file in bytes
+     *
      * @param source The file to be read
      * @return The data in the file
      */
@@ -124,12 +154,17 @@ public class EasyFiles {
 
     /**
      * Writes a to a file in bytes
-     * @param target The file to be written to
-     * @param content The content to be written
+     *
+     * @param target   The file to be written to
+     * @param listener A listener for a successful operation, may be null
+     * @param content  The content to be written
      */
-    public void writeFileByBytes(Path target, byte[] content) {
+    public void writeFileByBytes(Path target, byte[] content, ActionListeners listener) {
         try {
             Files.write(target, content);
+            if (listener != null) {
+                listener.actionSuccessful();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -137,7 +172,8 @@ public class EasyFiles {
 
     /**
      * Read a file and separates tokens
-     * @param source The file to be read
+     *
+     * @param source    The file to be read
      * @param delimiter The delimiter, that is,  the separator between tokens
      * @return The tokens read from the file
      */
@@ -147,7 +183,7 @@ public class EasyFiles {
             BufferedReader reader = Files.newBufferedReader(source);
 
             try (Scanner scanner = new Scanner(reader)) {
-                if (delimiter != null){
+                if (delimiter != null) {
                     scanner.useDelimiter(delimiter);// Default is spaces
                 }
                 while (scanner.hasNext()) {
@@ -162,5 +198,9 @@ public class EasyFiles {
             e.printStackTrace();
             return null;
         }
+    }
+
+    interface ActionListeners {
+        void actionSuccessful();
     }
 }

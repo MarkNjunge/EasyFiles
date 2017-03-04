@@ -1,5 +1,5 @@
 # EasyFiles
-A simple way of performing common file interactions.
+A library for simplifying common file interactions.
 
 The library can:
 
@@ -12,27 +12,45 @@ The library can:
 4. Read the content of a file in tokens.
 
 #Usage
+**Requires Java 7+**
 ```Java
 Path source = Paths.get("source.txt");
 Path target = Paths.get("target.txt");
 
+// Initializer
 EasyFiles easyFiles = new EasyFiles();
 
-easyFiles.copyFile(source, target);
-easyFiles.deleteFile(source);
-easyFiles.moveFile(source, target);
+// Copy File
+easyFiles.copyFile(source, target, new EasyFiles.ActionListeners() { // Success listener
+    @Override
+    public void actionSuccessful() {
+        System.out.println("Copy successful!");
+    }
+});
 
-Map<String, String> map = easyFiles.getFileNameAndExtension(source);
+// Delete file
+easyFiles.deleteFile(source, () -> { // lambda expressions for Java 8
+    System.out.println("Delete successful!");
+);
+
+// Move file
+easyFiles.moveFile(source, target, null); // No listener
+
+// Getting filename and extension
+Map<String, String> map = easyFiles.getFileNameAndExtension(source, null);
 map.get(EasyFiles.FILENAME);
 map.get(EasyFiles.EXTENSION);
 
+// Read and write files by line
 List<String> contentLines = easyFiles.readFileAsLines(source);
-easyFiles.writeFileByLine(target, contentLines, true);
+easyFiles.writeFileByLine(target, contentLines, true, null);
 
+// Read and write files by bytes
 byte[] contentBytes = easyFiles.readFileAsBytes(source);
-easyFiles.writeFileByBytes(target, contentBytes);
+easyFiles.writeFileByBytes(target, contentBytes, null);
 
-List<String> tokens = easyFiles.readFileTokens(source, null);
+// Read file using tokens
+List<String> tokens = easyFiles.readFileTokens(source, "delimiter");
 ```
 
 #License
