@@ -1,4 +1,6 @@
-
-\.idea/
-
-src/com/markkamau/Main\.java
+.idea
+out
+src/com/markkamau/Main.java
+target.txt
+source.txt
+*.iml
