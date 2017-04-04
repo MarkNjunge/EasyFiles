@@ -11,7 +11,7 @@ The library can:
 
 4. Read the content of a file in tokens.
 
-#Usage
+# Usage
 **Requires Java 7+**
 ```Java
 Path source = Paths.get("source.txt");
@@ -53,5 +53,5 @@ easyFiles.writeFileByBytes(target, contentBytes, null);
 List<String> tokens = easyFiles.readFileTokens(source, "delimiter");
 ```
 
-#License
+# License
 EasyFiles is licensed under Apache 2.0 License.
