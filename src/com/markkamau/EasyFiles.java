@@ -1,6 +1,9 @@
 package com.markkamau;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -10,12 +13,16 @@ import java.util.*;
  * A simple way of performing common file interactions
  *
  * @author Mark Kamau
- * @version 1.1
+ * @version 1.2
  */
 public class EasyFiles {
 
     public static final String FILENAME = "filename";
     public static final String EXTENSION = "extension";
+
+    interface ActionListeners {
+        void actionSuccessful();
+    }
 
     /**
      * Copies a file from one location to another
@@ -24,7 +31,7 @@ public class EasyFiles {
      * @param target   The target location and name of the new file
      * @param listener A listener for a successful operation, may be null
      */
-    public void copyFile(Path source, Path target, ActionListeners listener) {
+    public static void copyFile(Path source, Path target, ActionListeners listener) {
         try {
             Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
             if (listener != null) {
@@ -41,7 +48,7 @@ public class EasyFiles {
      * @param source   The file to be deleted
      * @param listener A listener for a successful operation, may be null
      */
-    public void deleteFile(Path source, ActionListeners listener) {
+    public static void deleteFile(Path source, ActionListeners listener) {
         try {
             Files.deleteIfExists(source);
             if (listener != null) {
@@ -59,9 +66,12 @@ public class EasyFiles {
      * @param target   The target location and name of the new file
      * @param listener A listener for a successful operation, may be null
      */
-    public void moveFile(Path source, Path target, ActionListeners listener) {
+    public static void moveFile(Path source, Path target, ActionListeners listener) {
         try {
             Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
+            if (listener != null){
+                listener.actionSuccessful();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -71,17 +81,13 @@ public class EasyFiles {
      * Returns the filename and extension
      *
      * @param source   The file to be inspected
-     * @param listener A listener for a successful operation, may be null
      * @return Map containing filename and extension, may be null
      */
-    public Map<String, String> getFileNameAndExtension(Path source, ActionListeners listener) {
+    public static Map<String, String> getFileNameAndExtension(Path source) {
         try {
             Map<String, String> result = new HashMap<>();
             result.put(FILENAME, source.getFileName().toString().split("\\.")[0]);
             result.put(EXTENSION, source.getFileName().toString().split("\\.")[1]);
-            if (listener != null) {
-                listener.actionSuccessful();
-            }
             return result;
         } catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
@@ -95,7 +101,7 @@ public class EasyFiles {
      * @param source The file to be read
      * @return The contents of the file
      */
-    public List<String> readFileAsLines(Path source) {
+    public static List<String> readFileAsLines(Path source) {
         List<String> lines = new ArrayList<>();
 
         try (BufferedReader reader = Files.newBufferedReader(source)) {
@@ -117,7 +123,7 @@ public class EasyFiles {
      * @param listener A listener for a successful operation, may be null
      * @param append   Whether or not the content should add to what is already there or replace it
      */
-    public void writeFileByLine(Path target, List<String> content, Boolean append, ActionListeners listener) {
+    public static void writeFileByLine(Path target, List<String> content, Boolean append, ActionListeners listener) {
         try {
             FileWriter fileWriter = new FileWriter(target.toString(), append);
 
@@ -143,7 +149,7 @@ public class EasyFiles {
      * @param source The file to be read
      * @return The data in the file
      */
-    public byte[] readFileAsBytes(Path source) {
+    public static byte[] readFileAsBytes(Path source) {
         try {
             return Files.readAllBytes(source);
         } catch (IOException e) {
@@ -159,7 +165,7 @@ public class EasyFiles {
      * @param listener A listener for a successful operation, may be null
      * @param content  The content to be written
      */
-    public void writeFileByBytes(Path target, byte[] content, ActionListeners listener) {
+    public static void writeFileByBytes(Path target, byte[] content, ActionListeners listener) {
         try {
             Files.write(target, content);
             if (listener != null) {
@@ -177,7 +183,7 @@ public class EasyFiles {
      * @param delimiter The delimiter, that is,  the separator between tokens
      * @return The tokens read from the file
      */
-    public List<String> readFileTokens(Path source, String delimiter) {
+    public static List<String> readFileTokens(Path source, String delimiter) {
         List<String> tokens = new ArrayList<>();
         try {
             BufferedReader reader = Files.newBufferedReader(source);
@@ -200,7 +206,4 @@ public class EasyFiles {
         }
     }
 
-    interface ActionListeners {
-        void actionSuccessful();
-    }
 }
