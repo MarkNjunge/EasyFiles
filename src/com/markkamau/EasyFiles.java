@@ -162,15 +162,11 @@ public class EasyFiles {
      * Writes a to a file in bytes
      *
      * @param target   The file to be written to
-     * @param listener A listener for a successful operation, may be null
      * @param content  The content to be written
      */
-    public static void writeFileByBytes(Path target, byte[] content, ActionListeners listener) {
+    public static void writeFileByBytes(Path target, byte[] content) {
         try {
             Files.write(target, content);
-            if (listener != null) {
-                listener.actionSuccessful();
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
