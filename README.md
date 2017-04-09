@@ -11,17 +11,16 @@ The library can:
 
 4. Read the content of a file in tokens.
 
+5. Get filename and extension
+
 # Usage
 **Requires Java 7+**
 ```Java
 Path source = Paths.get("source.txt");
 Path target = Paths.get("target.txt");
 
-// Initializer
-EasyFiles easyFiles = new EasyFiles();
-
 // Copy File
-easyFiles.copyFile(source, target, new EasyFiles.ActionListeners() { // Success listener
+EasyFiles.copyFile(source, target, new EasyFiles.ActionListeners() { // Action Successful listener
     @Override
     public void actionSuccessful() {
         System.out.println("Copy successful!");
@@ -29,29 +28,27 @@ easyFiles.copyFile(source, target, new EasyFiles.ActionListeners() { // Success 
 });
 
 // Delete file
-easyFiles.deleteFile(source, () -> { // lambda expressions for Java 8
-    System.out.println("Delete successful!");
-);
+EasyFiles.deleteFile(source, () -> System.out.println("Delete successful!"));
 
 // Move file
-easyFiles.moveFile(source, target, null); // No listener
+EasyFiles.moveFile(source, target, null); // No listener
 
 // Getting filename and extension
-Map<String, String> map = easyFiles.getFileNameAndExtension(source, null);
+Map<String, String> map = EasyFiles.getFileNameAndExtention(source);
 map.get(EasyFiles.FILENAME);
 map.get(EasyFiles.EXTENSION);
 
 // Read and write files by line
-List<String> contentLines = easyFiles.readFileAsLines(source);
-easyFiles.writeFileByLine(target, contentLines, true, null);
+List<String> contentLines = EasyFiles.readFileAsLines(source);
+EasyFiles.writeFileByLine(target, contentLines, true, null);
 
 // Read and write files by bytes
-byte[] contentBytes = easyFiles.readFileAsBytes(source);
-easyFiles.writeFileByBytes(target, contentBytes, null);
+byte[] contentBytes = EasyFiles.readFileAsBytes(source);
+EasyFiles.writeFileByBytes(target, contentBytes, null);
 
 // Read file using tokens
-List<String> tokens = easyFiles.readFileTokens(source, "delimiter");
-```
+List<String> tokens = EasyFiles.readFileTokens(source, "delimiter");
+```     
 
 # License
 EasyFiles is licensed under Apache 2.0 License.
