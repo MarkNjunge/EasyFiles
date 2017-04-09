@@ -83,7 +83,7 @@ public class EasyFiles {
      * @param source   The file to be inspected
      * @return Map containing filename and extension, may be null
      */
-    public static Map<String, String> getFileNameAndExtension(Path source) {
+    public static Map<String, String> getFileNameAndExtention(Path source) {
         try {
             Map<String, String> result = new HashMap<>();
             result.put(FILENAME, source.getFileName().toString().split("\\.")[0]);
