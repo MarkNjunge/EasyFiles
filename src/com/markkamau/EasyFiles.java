@@ -13,7 +13,7 @@ import java.util.*;
  * A simple way of performing common file interactions
  *
  * @author Mark Kamau
- * @version 1.2
+ * @version 1.2.1
  */
 public class EasyFiles {
 
@@ -163,6 +163,7 @@ public class EasyFiles {
      *
      * @param target   The file to be written to
      * @param content  The content to be written
+     * @param listener A listener for a successful operation, may be null
      */
     public static void writeFileByBytes(Path target, byte[] content, ActionListeners listener) {
         try {
