@@ -164,9 +164,12 @@ public class EasyFiles {
      * @param target   The file to be written to
      * @param content  The content to be written
      */
-    public static void writeFileByBytes(Path target, byte[] content) {
+    public static void writeFileByBytes(Path target, byte[] content, ActionListeners listener) {
         try {
             Files.write(target, content);
+            if (listener != null) {
+                listener.actionSuccessful();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
