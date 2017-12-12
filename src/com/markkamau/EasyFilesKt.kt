@@ -8,9 +8,6 @@ import java.nio.file.StandardCopyOption
 import java.util.Collections
 import java.util.Scanner
 
-val FILENAME = "filename"
-val EXTENSION = "extension"
-
 fun Path.copyFileTo(target: Path) {
     Files.copy(this, target, StandardCopyOption.REPLACE_EXISTING)
 }
@@ -21,12 +18,11 @@ fun Path.moveFileTo(target: Path) {
     Files.move(this, target, StandardCopyOption.REPLACE_EXISTING)
 }
 
-fun Path.getFileNameAndExtension(): Map<String, String> {
-    val result = HashMap<String, String>()
-    result.put(FILENAME, this.fileName.toString().split("\\.".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()[0])
-    result.put(EXTENSION, this.fileName.toString().split("\\.".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()[1])
-    return result
-}
+val Path.filenameOnly: String
+    get() = this.fileName.toString().split("\\.".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()[0]
+
+val Path.extension: String
+    get() = this.fileName.toString().split("\\.".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()[1]
 
 fun Path.readFileAsLines(): MutableList<String> {
     var lines = Collections.emptyList<String>()

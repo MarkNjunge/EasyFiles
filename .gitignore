@@ -4,3 +4,5 @@ src/com/markkamau/Main.java
 target.txt
 source.txt
 *.iml
+/lib/
+/src/com/markkamau/MainKt.kt

@@ -57,10 +57,11 @@ List<String> tokens = EasyFiles.readFileTokens(source, "delimiter");
 val source = Paths.get("source.txt")
 val target = Paths.get("target.txt")
 
+val extension = source.extension 
+val filename = source.filenameOnly
 source.copyFileTo(target)
 source.deleteFile()
 source.moveFileTo(target)
-source.getFileNameAndExtension() // Returns: Map<String, String>
 source.readFileAsLines() // Returns: MutableList<String>
 source.writeFileByLine(content, append) // Append is optional
 ```
